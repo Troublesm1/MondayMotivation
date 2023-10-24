@@ -1,16 +1,22 @@
-# This is a sample Python script.
+import smtplib
+import datetime as dt
+import random
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+MY_EMAIL = "XXXX.COM"
+MY_PASSWORD = "1234"
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+now = dt.datetime.now()
+weekday = now.weekday()
+if weekday == 1:
+    with open("quotes.txt") as quote_file:
+        all_quotes = quote_file.readlines()
+        quote = random.choice(all_quotes)
+    print(quote)
+    with smtplib.SMTP("smtp.xxxx.xxxx.com") as connection:
+        connection.starttls()
+        connection.login(MY_EMAIL, MY_PASSWORD)
+        connection.sendemail(
+            from_addr=MY_EMAIL,
+            to_addrs=MY_EMAIL,
+            msg=f"Subject:Monday Motivation\n\n{quote}"
+        )
